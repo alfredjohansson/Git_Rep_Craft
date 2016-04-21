@@ -21,8 +21,12 @@
 
         <activity android:name=".ProjectActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Välj Projekt"
-            />
+            android:label="Välj Projekt" />
+
+        <activity android:name=".ChooseFloorActivity"
+            android:label="Välj Plan"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

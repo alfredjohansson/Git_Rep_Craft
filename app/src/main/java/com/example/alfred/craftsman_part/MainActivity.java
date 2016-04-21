@@ -21,8 +21,12 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private String idSentBack;
+    private String floorSentBack;
+
+
     final int PROJECT_ID=1;
-    private static final int RESULT_OK=2;
+    final int PROJECT_FLOOR=2;
+
 
     TextView idReturned;
 
@@ -37,18 +41,26 @@ public class MainActivity extends AppCompatActivity {
                 "rum 4" ,
                 "rum 5" ,
                 "rum 6" ,
-                "rum7" ,
-                "8" ,
-                "9" ,
-                "10"};
+                "rum 7" ,
+                "rum 8" ,
+                "rum 9" ,
+                "rum 10"};
 
         ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rooms);
 
-        ListView roomList = (ListView)findViewById(R.id.room_list);
+        final ListView roomList = (ListView)findViewById(R.id.room_list);
 
         idReturned = (TextView)findViewById(R.id.id_returned_txt);
 
         roomList.setAdapter(listAdapter);
+
+        roomList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                idReturned.setText(roomList.getItemAtPosition(position).toString());
+            }
+        });
 
 
 
@@ -79,6 +91,11 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        if (id == R.id.action_pick_floor){
+            Intent getChooseFloorActivity = new Intent(this, ChooseFloorActivity.class);
+            startActivityForResult(getChooseFloorActivity, PROJECT_FLOOR);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -87,9 +104,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-           idSentBack = data.getStringExtra("projectID");
+            //ID från välj projekt
 
-           idReturned.setText(idSentBack);
+            if(PROJECT_ID==requestCode) {
+                idSentBack = data.getStringExtra("projectID");
+                idReturned.setText(idSentBack);
+
+
+            } else if(PROJECT_FLOOR == requestCode) {
+                floorSentBack = data.getStringExtra("floorID");
+                idReturned.setText(floorSentBack);
+            }
+
+
 
     }
+
 }
