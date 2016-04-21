@@ -47,6 +47,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/return_to_Main_btn"
             android:text="Tillbaka"
+            android:onClick="goBack"
             />
 
 
