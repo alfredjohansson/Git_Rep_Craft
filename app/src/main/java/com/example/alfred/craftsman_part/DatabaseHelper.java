@@ -154,6 +154,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (result == -1) {
             return false;
         } else return true;
+
+
     }
 
     public boolean checkWpId(int ID){
@@ -166,7 +168,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             if (cursor.moveToFirst()) {
                 do {
-                    a = cursor.getInt(0);
+                    a = cursor.getInt(0);https://github.com/alfredjohansson/Git_Rep_Craft.git
                     if (a == ID) {
                         return true;
                     }

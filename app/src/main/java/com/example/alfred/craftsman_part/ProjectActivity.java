@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 public class ProjectActivity extends Activity{
 
+    DatabaseHelper db = new DatabaseHelper(this);
+
 
     String projectId;
     int id;
@@ -39,28 +41,24 @@ public class ProjectActivity extends Activity{
         id = Integer.parseInt(projectId);
 
 
+        //Kollar ifall id finns i databasen
+        boolean exist = db.checkWpId(id);
+
+        //Ska stoppa ifall inget har skrivits i editText
         if ("".equals(projectId)) {
             error.append("Fel: Måste välja ett projekt!");
             return;
         }
-        else {
 
-            //Här ska ID kollas mot databasen för att se så det finns
-        /*Try {
+        //Ger fel ifall id inte finns i databesen
+        else if (!exist){
 
-            dataBase.CheckID(id);
-
-            catch (exeption e){
-                error.setText(e);
-
-            }
-
+            error.setText("Fel: Projekt hittades inte");
         }
-            //Ifall ID finns så ska activiteten returnera ID eller 0 ifall det inte hittade något
-         */
 
-            //Intent activityThatCalled = getIntent();
+        //Ifall id finns returnera det till Main och gå tillbaka
 
+        else if (exist) {
 
             Intent goBack = new Intent();
 
