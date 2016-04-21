@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.alfred.craftsman_part.MainActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_choose_project"
+        android:orderInCategory="100"
+        android:title="Välj Project"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_pick_floor"
+        android:orderInCategory="100"
+        android:title="Välj Plan"
+        app:showAsAction="never" />
+</menu>
