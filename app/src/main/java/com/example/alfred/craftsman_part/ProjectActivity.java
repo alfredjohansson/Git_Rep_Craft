@@ -3,7 +3,6 @@ package com.example.alfred.craftsman_part;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,9 +12,8 @@ import android.widget.TextView;
 public class ProjectActivity extends Activity{
 
 
-    private final static int RESULT_OK = 1;
-    private final static int RESULT_NOT_OK = 0;
-
+    String projectId;
+    int id;
 
     Button choose, back;
     TextView error;
@@ -36,12 +34,18 @@ public class ProjectActivity extends Activity{
 
     public void sendBackValue(){
 
-        String projectId = projectId_edit.getText().toString();
-        int id = Integer.parseInt(projectId);
+
+        projectId = projectId_edit.getText().toString();
+        id = Integer.parseInt(projectId);
 
 
+        if ("".equals(projectId)) {
+            error.append("Fel: Måste välja ett projekt!");
+            return;
+        }
+        else {
 
-        //Här ska ID kollas mot databasen för att se så det finns
+            //Här ska ID kollas mot databasen för att se så det finns
         /*Try {
 
             dataBase.CheckID(id);
@@ -55,23 +59,32 @@ public class ProjectActivity extends Activity{
             //Ifall ID finns så ska activiteten returnera ID eller 0 ifall det inte hittade något
          */
 
-        //Intent activityThatCalled = getIntent();
+            //Intent activityThatCalled = getIntent();
 
 
+            Intent goBack = new Intent();
 
-            Intent getMainActivity = new Intent();
+            goBack.putExtra("projectID", projectId);
 
-            getMainActivity.putExtra("projectID", id);
-
-            setResult(RESULT_OK, getMainActivity);
+            setResult(RESULT_OK, goBack);
 
             finish();
-
-
         }
+
+    }
 
     public void onChoose(View view) {
 
         sendBackValue();
+
+    }
+
+    public void goBack(View view) {
+
+        Intent goBack = new Intent();
+
+        setResult(RESULT_CANCELED, goBack);
+
+        finish();
     }
 }

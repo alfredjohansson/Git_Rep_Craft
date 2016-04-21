@@ -20,8 +20,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int idSentBack;
-    private static final int PROJECT_ID=1;
+    private String idSentBack;
+    final int PROJECT_ID=1;
     private static final int RESULT_OK=2;
 
     TextView idReturned;
@@ -33,13 +33,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String [] rooms = {"rum 1", "rum 2", "rum 3"};
+        String [] rooms = {"rum 1", "rum 2", "rum 3" ,
+                "rum 4" ,
+                "rum 5" ,
+                "rum 6" ,
+                "rum7" ,
+                "8" ,
+                "9" ,
+                "10"};
 
         ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rooms);
 
         ListView roomList = (ListView)findViewById(R.id.room_list);
 
-        idReturned = (TextView)findViewById(R.id.project_id_returned);
+        idReturned = (TextView)findViewById(R.id.id_returned_txt);
 
         roomList.setAdapter(listAdapter);
 
@@ -80,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-            idSentBack = data.getIntExtra("projectID", resultCode);
+           idSentBack = data.getStringExtra("projectID");
 
-            idReturned.setText(idSentBack);
+           idReturned.setText(idSentBack);
 
     }
 }
