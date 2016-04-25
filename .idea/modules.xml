@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Craftsman_Part.iml" filepath="$PROJECT_DIR$/Craftsman_Part.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Git_Rep_Craft.iml" filepath="$PROJECT_DIR$/Git_Rep_Craft.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

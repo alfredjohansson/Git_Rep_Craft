@@ -23,9 +23,10 @@ public class MainActivity extends AppCompatActivity {
     private String idSentBack;
     private String floorSentBack;
 
-
+    DatabaseHelper db;
     final int PROJECT_ID=1;
     final int PROJECT_FLOOR=2;
+    String [] rooms;
 
 
     TextView idReturned;
@@ -36,16 +37,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        DatabaseHelper db = new DatabaseHelper(this);
+        db = new DatabaseHelper(this);
         db.insertData();
-        String [] rooms = {"rum 1", "rum 2", "rum 3" ,
-                "rum 4" ,
-                "rum 5" ,
-                "rum 6" ,
-                "rum 7" ,
-                "rum 8" ,
-                "rum 9" ,
-                "rum 10"};
+        db.close();
+        rooms = new String[]{"rum 1", "rum 2", "rum 3",
+                "rum 4",
+                "rum 5",
+                "rum 6",
+                "rum 7",
+                "rum 8",
+                "rum 9", "rum 10"};
 
         ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rooms);
 
@@ -58,14 +59,18 @@ public class MainActivity extends AppCompatActivity {
         roomList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 idReturned.setText(roomList.getItemAtPosition(position).toString());
+
+
             }
         });
 
+            }
 
 
-    }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,7 +114,15 @@ public class MainActivity extends AppCompatActivity {
 
             if(PROJECT_ID==requestCode) {
                 idSentBack = data.getStringExtra("projectID");
-                idReturned.setText(idSentBack);
+                int test = Integer.parseInt(idSentBack);
+                String [] blabla = db.getFloors(test);
+               // db.close();
+
+                for(int i = 0 ; i < blabla.length; i++){
+                    idReturned.append(" "+ blabla[i]);
+                }
+
+                //idReturned.setText(idSentBack);
 
 
             } else if(PROJECT_FLOOR == requestCode) {

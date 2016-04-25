@@ -11,11 +11,12 @@ import android.widget.TextView;
 
 public class ProjectActivity extends Activity{
 
-    DatabaseHelper db = new DatabaseHelper(this);
+
 
 
     String projectId;
     int id;
+    DatabaseHelper db;
 
     Button choose, back;
     TextView error;
@@ -30,6 +31,7 @@ public class ProjectActivity extends Activity{
         choose = (Button)findViewById(R.id.chose_project_Btn);
         back = (Button)findViewById(R.id.return_to_Main_btn);
         projectId_edit = (EditText)findViewById(R.id.project_id_edit);
+        db = new DatabaseHelper(this);
 
 
     }
@@ -42,7 +44,8 @@ public class ProjectActivity extends Activity{
 
 
         //Kollar ifall id finns i databasen
-        boolean exist = db.checkWpId(id);
+       boolean exist = db.checkWpId(id);
+        db.close();
 
         //Ska stoppa ifall inget har skrivits i editText
         if ("".equals(projectId)) {
@@ -54,8 +57,8 @@ public class ProjectActivity extends Activity{
         else if (!exist){
 
             error.setText("Fel: Projekt hittades inte");
+            return;
         }
-
         //Ifall id finns returnera det till Main och gå tillbaka
 
         else if (exist) {
