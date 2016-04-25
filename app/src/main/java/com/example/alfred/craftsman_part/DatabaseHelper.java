@@ -46,11 +46,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Sätter upp Arbetsplattstabell
     private static final String WORKPLACE_TABLE_CREATE = "CREATE TABLE " + WORKPLACE_TABLE +" ("
-            + COLUMN_WORKPLACE_ID + " INTEGER PRIMARY KEY, "
+            + COLUMN_WORKPLACE_ID + " INTEGER , "
             + COLUMN_WORKPLACE_NAME + " TEXT, "
             + COLUMN_FLOOR + " INTEGER, "
             + COLUMN_ROOM + " INTEGER, "
-            + COLUMN_FLOOR_MAP + " TEXT "
+            + COLUMN_FLOOR_MAP + " TEXT, "
+            + "PRIMARY KEY ( " + COLUMN_WORKPLACE_ID + ", " + COLUMN_FLOOR + ", " + COLUMN_ROOM + ") "
             +")";
 
     // Sätter upp Rumstabell
@@ -103,7 +104,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean insertWorkPlace(int ID, String name, String floor, int room, String floorMap){
+    public boolean insertWorkPlace(int ID, String name, int floor, int room, String floorMap){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -168,7 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             if (cursor.moveToFirst()) {
                 do {
-                    a = cursor.getInt(0);https://github.com/alfredjohansson/Git_Rep_Craft.git
+                    a = cursor.getInt(0); //https://github.com/alfredjohansson/Git_Rep_Craft.git
                     if (a == ID) {
                         return true;
                     }
@@ -177,6 +178,62 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
         return false;
+    }
+    // Funktion för att plocka ut distinkta våningsplan utifrån ett arbetsplatts ID
+    public String [] getFloors(int Workplace_ID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT DISTINCT " + COLUMN_FLOOR + " FROM " + WORKPLACE_TABLE +
+                " WHERE " + COLUMN_WORKPLACE_ID + " = " + Workplace_ID;
+        String [] floors = null;
+        int place = 0;
+        if(db != null){
+            Cursor cursor = db.rawQuery(query,null);
+            floors = new String[cursor.getCount()];
+
+            if (cursor.moveToFirst()){
+
+                do{
+                    floors[place] = cursor.getString(0);
+                    place ++;
+                }
+                while(cursor.moveToNext());
+            }
+        }
+        db.close();
+        return floors;
+
+    }
+    // Funktion för att plocka ut distinkta rum utifrån ett arbetsplatts ID och våning
+    public int [] getRoom(int Workplace_ID, int floor){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT DISTINCT " + COLUMN_ROOM + " FROM " + WORKPLACE_TABLE + " WHERE " +
+                COLUMN_WORKPLACE_ID + " = " + Workplace_ID +" AND " + COLUMN_FLOOR + " = " + floor;
+        int [] rooms = null;
+        int place = 0;
+        if(db != null){
+            Cursor cursor = db.rawQuery(query, null);
+            rooms = new int[cursor.getCount()];
+
+            if(cursor.moveToFirst()){
+                do{
+                    rooms [place] = cursor.getInt(0);
+                    place ++;
+                }
+                while(cursor.moveToNext());
+            }
+        }
+        db.close();
+        return rooms;
+    }
+
+    public void insertData(){
+        insertWorkPlace(1,"Arbetsplatts1",1,1,"Våningsritning11");
+        insertWorkPlace(1,"Arbetsplatts1",1,2,"Våningsritning11");
+        insertWorkPlace(1,"Arbetsplatts1",2,1,"Våningsritning12");
+        insertWorkPlace(2,"Arbetsplatts2",1,1,"Våningsritning21");
+        insertWorkPlace(2,"Arbetsplatts2",1,2,"Våningsritning21");
+
+
     }
 }
 

@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        DatabaseHelper db = new DatabaseHelper(this);
+        db.insertData();
         String [] rooms = {"rum 1", "rum 2", "rum 3" ,
                 "rum 4" ,
                 "rum 5" ,
