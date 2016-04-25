@@ -2,6 +2,7 @@ package com.example.alfred.craftsman_part;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,8 @@ public class ProjectActivity extends Activity{
 
         projectId = projectId_edit.getText().toString();
         id = Integer.parseInt(projectId);
+        SharedPreferences ID = getSharedPreferences("projectSettings", MODE_PRIVATE);
+
 
 
         //Kollar ifall id finns i databasen
@@ -63,9 +66,13 @@ public class ProjectActivity extends Activity{
 
         else if (exist) {
 
+            ID.edit().putInt("projectID",id).commit();
+
+
+
             Intent goBack = new Intent();
 
-            goBack.putExtra("projectID", projectId);
+            goBack.putExtra("projectID",projectId);
 
             setResult(RESULT_OK, goBack);
 

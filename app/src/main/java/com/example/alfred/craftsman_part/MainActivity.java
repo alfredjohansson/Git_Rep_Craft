@@ -1,6 +1,7 @@
 package com.example.alfred.craftsman_part;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,8 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     private String idSentBack;
     private String floorSentBack;
+    private int idFromProject;
 
     DatabaseHelper db;
+    final int DEFAULT=0;
     final int PROJECT_ID=1;
     final int PROJECT_FLOOR=2;
     String [] rooms;
@@ -40,14 +43,14 @@ public class MainActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
         db.insertData();
         db.close();
-        rooms = new String[]{"rum 1", "rum 2", "rum 3",
-                "rum 4",
-                "rum 5",
-                "rum 6",
-                "rum 7",
-                "rum 8",
-                "rum 9", "rum 10"};
 
+        SharedPreferences projectSettings = getSharedPreferences("projectSettings", MODE_PRIVATE);
+        int projectID = projectSettings.getInt("projectID", DEFAULT);
+        int floorID = projectSettings.getInt("projectFloor",DEFAULT);
+
+
+
+        String [] rooms = db.getRoom(projectID,floorID);
         ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rooms);
 
         final ListView roomList = (ListView)findViewById(R.id.room_list);
@@ -99,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_pick_floor){
             Intent getChooseFloorActivity = new Intent(this, ChooseFloorActivity.class);
+            getChooseFloorActivity.putExtra("prokectID",idFromProject);
             startActivityForResult(getChooseFloorActivity, PROJECT_FLOOR);
         }
 
@@ -114,9 +118,9 @@ public class MainActivity extends AppCompatActivity {
 
             if(PROJECT_ID==requestCode) {
                 idSentBack = data.getStringExtra("projectID");
-                int test = Integer.parseInt(idSentBack);
-                String [] blabla = db.getFloors(test);
-               // db.close();
+                idFromProject = Integer.parseInt(idSentBack);
+                String [] blabla = db.getFloors(idFromProject);
+                db.close();
 
                 for(int i = 0 ; i < blabla.length; i++){
                     idReturned.append(" "+ blabla[i]);
