@@ -256,6 +256,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return message;
     }
 
+
     public void insertData(){
         insertWorkPlace(1,"Arbetsplatts1",1,1,"Våningsritning11");
         insertWorkPlace(1,"Arbetsplatts1",1,2,"Våningsritning11");
