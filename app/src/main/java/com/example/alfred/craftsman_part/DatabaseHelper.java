@@ -187,20 +187,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Funktion för att plocka ut distinkta våningsplan utifrån ett arbetsplatts ID
-    public int [] getFloors(int Workplace_ID){
+    public String [] getFloors(int Workplace_ID){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT DISTINCT " + COLUMN_FLOOR + " FROM " + WORKPLACE_TABLE +
                 " WHERE " + COLUMN_WORKPLACE_ID + " = " + Workplace_ID;
-        int [] floors = null;
+        String [] floors = null;
         int place = 0;
         if(db != null){
             Cursor cursor = db.rawQuery(query,null);
-            floors = new int[cursor.getCount()];
+            floors = new String[cursor.getCount()];
 
             if (cursor.moveToFirst()){
 
                 do{
-                    floors[place] = cursor.getInt(0);
+                    floors[place] = cursor.getString(0);
                     place ++;
                 }
                 while(cursor.moveToNext());
@@ -211,19 +211,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
     // Funktion för att plocka ut distinkta rum utifrån ett arbetsplatts ID och våning
-    public int [] getRoom(int Workplace_ID, int floor){
+    public String [] getRoom(int Workplace_ID, int floor){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT DISTINCT " + COLUMN_ROOM + " FROM " + WORKPLACE_TABLE + " WHERE " +
                 COLUMN_WORKPLACE_ID + " = " + Workplace_ID +" AND " + COLUMN_FLOOR + " = " + floor;
-        int [] rooms = null;
+        String [] rooms = null;
         int place = 0;
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
-            rooms = new int[cursor.getCount()];
+            rooms = new String[cursor.getCount()];
 
             if(cursor.moveToFirst()){
                 do{
-                    rooms [place] = cursor.getInt(0);
+                    rooms [place] = cursor.getString(0);
                     place ++;
                 }
                 while(cursor.moveToNext());

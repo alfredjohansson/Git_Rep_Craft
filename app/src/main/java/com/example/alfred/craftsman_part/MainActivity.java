@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         String [] rooms = db.getRoom(projectID,floorID);
-        ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rooms);
+        db.close();
+        ListAdapter listAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, rooms);
 
         final ListView roomList = (ListView)findViewById(R.id.room_list);
 

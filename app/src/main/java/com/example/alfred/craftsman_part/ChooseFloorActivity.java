@@ -35,7 +35,7 @@ public class ChooseFloorActivity extends Activity {
         final TextView floormap = (TextView)findViewById(R.id.floor_selected_txt);
 
         String [] floors = db.getFloors(i); //{"Plan 1", "Plan 2", "Plan 3", "Plan 4", "Plan 5", "Plan 6", "Plan 7", "Plan 8", "Plan 9", "Plan 10", "Plan 11", "Plan 12"};
-
+        db.close();
         ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, floors);
 
         floor_list.setAdapter(listAdapter);
