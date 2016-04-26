@@ -56,17 +56,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Sätter upp Rumstabell
     private static final String ROOM_TABLE_CREATE = "CREATE TABLE " + ROOM_TABLE +" ("
-            + COLUMN_ROOM + " INTEGER PRIMARY KEY, "
+            + COLUMN_ROOM + " INTEGER , "
+            + COLUMN_FLOOR + " INTEGER, "
+            + COLUMN_WORKPLACE_ID + " INTEGER , "
             + COLUMN_WORKPACKAGE + " TEXT, "
-            + COLUMN_ROOM_MAP + " TEXT "
+            + COLUMN_ROOM_MAP + " TEXT, "
+            + "PRIMARY KEY ( " + COLUMN_WORKPLACE_ID + ", " + COLUMN_FLOOR + ", " + COLUMN_ROOM + ", " + COLUMN_WORKPACKAGE + ") "
             +")";
 
 
     // Sätter upp Arbetspaketstabell
     private static final String WORKPACKAGE_TABLE_CREATE = "CREATE TABLE " + WORKPACKAGE_TABLE +" ("
-            + COLUMN_WORKPACKAGE + " INTEGER PRIMARY KEY, "
+            + COLUMN_WORKPACKAGE + " TEXT PRIMARY KEY, "
             + COLUMN_MESSAGES + " TEXT, "
-            + COLUMN_OTHER_MAPS + " INTEGER, "
+            + COLUMN_OTHER_MAPS + " TEXT, "
             + COLUMN_STATUS + " BOOLEAN, "
             + COLUMN_CONTROLS + " TEXT, "
             + COLUMN_SIGNATURES + " TEXT, "
@@ -121,11 +124,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }else return true;
     }
 
-    public boolean insertRoom(int room, String workpackage, String roomMap) {
+    public boolean insertRoom(int room, int floor, int workplace_ID, String workpackage, String roomMap) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COLUMN_ROOM, room);
+        contentValues.put(COLUMN_FLOOR, floor);
+        contentValues.put(COLUMN_WORKPLACE_ID, workplace_ID);
         contentValues.put(COLUMN_WORKPACKAGE, workpackage);
         contentValues.put(COLUMN_ROOM_MAP, roomMap);
 
@@ -177,23 +182,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 while (cursor.moveToNext());
             }
         }
+        db.close();
         return false;
     }
+
     // Funktion för att plocka ut distinkta våningsplan utifrån ett arbetsplatts ID
-    public String [] getFloors(int Workplace_ID){
+    public int [] getFloors(int Workplace_ID){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT DISTINCT " + COLUMN_FLOOR + " FROM " + WORKPLACE_TABLE +
                 " WHERE " + COLUMN_WORKPLACE_ID + " = " + Workplace_ID;
-        String [] floors = null;
+        int [] floors = null;
         int place = 0;
         if(db != null){
             Cursor cursor = db.rawQuery(query,null);
-            floors = new String[cursor.getCount()];
+            floors = new int[cursor.getCount()];
 
             if (cursor.moveToFirst()){
 
                 do{
-                    floors[place] = cursor.getString(0);
+                    floors[place] = cursor.getInt(0);
                     place ++;
                 }
                 while(cursor.moveToNext());
@@ -204,19 +211,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
     // Funktion för att plocka ut distinkta rum utifrån ett arbetsplatts ID och våning
-    public String [] getRoom(int Workplace_ID, int floor){
+    public int [] getRoom(int Workplace_ID, int floor){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT DISTINCT " + COLUMN_ROOM + " FROM " + WORKPLACE_TABLE + " WHERE " +
-                COLUMN_WORKPLACE_ID + " = " + Workplace_ID +" AND " + COLUMN_FLOOR + " = '" + floor + "' ";
-        String [] rooms = null;
+                COLUMN_WORKPLACE_ID + " = " + Workplace_ID +" AND " + COLUMN_FLOOR + " = " + floor;
+        int [] rooms = null;
         int place = 0;
         if(db != null){
             Cursor cursor = db.rawQuery(query, null);
-            rooms = new String[cursor.getCount()];
+            rooms = new int[cursor.getCount()];
 
             if(cursor.moveToFirst()){
                 do{
-                    rooms [place] = cursor.getString(0);
+                    rooms [place] = cursor.getInt(0);
                     place ++;
                 }
                 while(cursor.moveToNext());
@@ -225,7 +232,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return rooms;
     }
-    // Funktion för att kontrollera statusen på ett projekt
+    // Funktion som ger arbetsplattsnamnet
+    public String getWorkplace(int Workplace_ID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT DISTINCT Workplace_name FROM Workplacetable WHERE workplace_id = " + Workplace_ID;
+        String name = null;
+        if (db != null){
+            Cursor cursor = db.rawQuery(query, null);
+
+            if(cursor.moveToFirst()){
+                do{
+                    name = cursor.getString(0);
+                }
+                while(cursor.moveToNext());
+            }
+        }
+        db.close();
+        return name;
+
+    }
+    // Funktion som plockar ut alla arbetspaket för ett rum
+    public String [] getWP(int room, int floor,int wpID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT DISTINCT " + COLUMN_WORKPACKAGE + " FROM " + ROOM_TABLE + " WHERE " +
+                COLUMN_WORKPLACE_ID + " = " + wpID +" AND " + COLUMN_FLOOR + " = " + floor + " AND " +
+                COLUMN_ROOM + " = " + room;
+        String [] WP = null;
+        int place = 0;
+        if(db != null){
+            Cursor cursor = db.rawQuery(query,null);
+            WP = new String [cursor.getCount()];
+            if(cursor.moveToFirst()){
+                do{
+                    WP[place] = cursor.getString(0);
+                    place ++;
+                }
+                while(cursor.moveToNext());
+            }
+        }
+        db.close();
+        return WP;
+    }
+    // Funktion för att kontrolera statusen på ett arbetspaket.
     public boolean getStatus(String WP){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -255,19 +303,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return message;
     }
-    // Funktion för att signera ett AP
+
     public boolean sign(String WP, String signature){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + WORKPACKAGE_TABLE + " SET " + COLUMN_SIGNATURES + " ='" + signature + "' " + "WHERE " + COLUMN_WORKPACKAGE + " ='" + WP + "' ";
+
         try {
             db.execSQL(query);
             db.close();
             return true;
         }catch (Exception e){
+            db.close();
             return false;
         }
     }
-    // Funktion för att signera och ändra status på ett AP
     public boolean changeStatus(String WP, String signature, boolean status){
         SQLiteDatabase db = this.getWritableDatabase();
         int a;
@@ -286,17 +335,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    //Lägger till data i databasen
-    public void insertData(){
 
+    public void insertData(){
         insertWorkPlace(1,"Arbetsplatts1",1,1,"Våningsritning11");
         insertWorkPlace(1,"Arbetsplatts1",1,2,"Våningsritning11");
         insertWorkPlace(1,"Arbetsplatts1",2,1,"Våningsritning12");
         insertWorkPlace(2,"Arbetsplatts2",1,1,"Våningsritning21");
         insertWorkPlace(2,"Arbetsplatts2",1,2,"Våningsritning21");
 
+        insertRoom(1,1,1,"AP1","Rumsritning1");
+        insertRoom(1,1,1,"AP2","Rumsritning1");
+        insertRoom(2,1,1,"AP3","Rumsritning2");
+        insertRoom(2,1,1,"AP4","Rumsritning2");
 
+        insertWorkPackage("AP1","","Ritning",false,"kolla med vattenpass","","Hammare","reglar");
+        insertWorkPackage("AP2","Ser bra ut","Ritning",true,"Dubbelkolla cc","Ove","Hammare","Gips");
+        insertWorkPackage("AP3","","Ritning",false,"Kolla något","","Såg","Gips");
     }
 }
-
-
