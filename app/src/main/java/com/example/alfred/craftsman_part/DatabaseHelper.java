@@ -255,8 +255,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return message;
     }
+    // Funktion för att signera ett AP
+    public boolean sign(String WP, String signature){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + WORKPACKAGE_TABLE + " SET " + COLUMN_SIGNATURES + " ='" + signature + "' " + "WHERE " + COLUMN_WORKPACKAGE + " ='" + WP + "' ";
+        try {
+            db.execSQL(query);
+            db.close();
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+    // Funktion för att signera och ändra status på ett AP
+    public boolean changeStatus(String WP, String signature, boolean status){
+        SQLiteDatabase db = this.getWritableDatabase();
+        int a;
+        if(status){
+            a = 1;
+        }
+        else a = 0;
+        String query = "UPDATE " + WORKPACKAGE_TABLE + " SET " + COLUMN_STATUS + " =" + a + " WHERE " + COLUMN_WORKPACKAGE + " ='" + WP + "' ";
+        try {
+            db.execSQL(query);
+            db.close();
+            sign(WP,signature);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 
-
+    //Lägger till data i databasen
     public void insertData(){
 
         insertWorkPlace(1,"Arbetsplatts1",1,1,"Våningsritning11");
