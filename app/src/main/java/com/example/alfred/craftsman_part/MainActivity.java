@@ -1,5 +1,6 @@
 package com.example.alfred.craftsman_part;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
@@ -15,34 +16,41 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private String idSentBack;
     private String floorSentBack;
     private int idFromProject;
+    private int roomIdFromChoosen;
 
     DatabaseHelper db;
     final int DEFAULT=0;
     final int PROJECT_ID=1;
     final int PROJECT_FLOOR=2;
+    int ACTIVITY_ROOM=3;
     String [] rooms;
 
 
     TextView idReturned;
+    Button chooseFloor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Context context = this;
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         db = new DatabaseHelper(this);
         db.insertData();
         db.close();
+        chooseFloor = (Button) findViewById(R.id.choose_room_btn);
 
         SharedPreferences projectSettings = getSharedPreferences("projectSettings", MODE_PRIVATE);
         int projectID = projectSettings.getInt("projectID", DEFAULT);
@@ -62,18 +70,17 @@ public class MainActivity extends AppCompatActivity {
         roomList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                idReturned.setText(roomList.getItemAtPosition(position).toString());
 
+                roomIdFromChoosen = Integer.parseInt(roomList.getItemAtPosition(position).toString());
+
+                Toast.makeText(context, "Du har valt rum " + roomIdFromChoosen, Toast.LENGTH_SHORT).show();
 
             }
         });
 
+
+
             }
-
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -135,6 +142,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
+
+    }
+
+    public void chooseRoom(View view) {
+        Intent getActivityRoom = new Intent(this, RoomActivity.class);
+        getActivityRoom.putExtra("roomID", roomIdFromChoosen);
+        startActivityForResult(getActivityRoom, ACTIVITY_ROOM);
 
     }
 
