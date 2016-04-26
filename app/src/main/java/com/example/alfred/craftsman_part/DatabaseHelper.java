@@ -225,6 +225,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return rooms;
     }
+    // Funktion för att kontrollera statusen på ett projekt
+    public boolean getStatus(String WP){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT " + COLUMN_STATUS + " FROM " + WORKPACKAGE_TABLE + " WHERE " + COLUMN_WORKPACKAGE +  " = '" + WP + "' ";
+        int result = 0;
+        if(db != null) {
+            Cursor cursor = db.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                result = cursor.getInt(0);
+            }
+        }
+        if(result == 1){
+            return true;
+        }else return false;
+    }
+    // Funktion för att plocka ut meddelanden
+    public String getMessage(String WP){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_MESSAGES + " FROM " + WORKPACKAGE_TABLE + " WHERE " + COLUMN_WORKPACKAGE +  " = '" + WP + "' ";
+        String message = "";
+        if(db != null){
+            Cursor cursor = db.rawQuery(query,null);
+            if(cursor.moveToFirst()){
+                message = cursor.getString(0);
+            }
+        }
+        db.close();
+        return message;
+    }
+
 
     public void insertData(){
         insertWorkPlace(1,"Arbetsplatts1",1,1,"Våningsritning11");
