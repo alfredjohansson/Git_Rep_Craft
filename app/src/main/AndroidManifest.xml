@@ -27,6 +27,12 @@
             android:label="Välj Plan"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity android:name=".RoomActivity"
+            android:label="Välj Arbetspaket"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
     </application>
 
 </manifest>
