@@ -51,7 +51,7 @@ public class ProjectActivity extends Activity{
         db.close();
 
         //Ska stoppa ifall inget har skrivits i editText
-        if ("".equals(projectId)) {
+        if (projectId_edit.getText().length()==0) {
             error.append("Fel: Måste välja ett projekt!");
             return;
         }
