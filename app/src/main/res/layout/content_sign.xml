@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.alfred.craftsman_part.MainActivity"
+    tools:showIn="@layout/activity_sign"
+    android:orientation="vertical"
+    android:gravity="center|top"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+
+    <TextView
+        android:id="@+id/header"
+        android:nextFocusUp="@id/header"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:text="Användare och Lösenord"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:textStyle="bold"/>
+    <EditText
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:hint="Användarnamn"
+        android:id="@+id/user_name_edit"
+        android:gravity="center"/>
+    <EditText
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:hint="Lösenord"
+        android:id="@+id/user_pw_edit"
+        android:gravity="center"
+        android:inputType="textPassword"/>
+    <Button
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="50dp"
+        android:text="Skriv udner"
+        android:id="@+id/sign_with_login_btn"
+        android:onClick="sign"/>
+
+    <TextView
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:id="@+id/sign_error_txt"
+        android:textColor="#fa0101" />
+
+
+
+
+
+
+</LinearLayout>

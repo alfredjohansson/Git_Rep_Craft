@@ -58,6 +58,7 @@
     <TextView
         android:layout_width="240dp"
         android:layout_height="300dp"
-        android:id="@+id/login_error_txt"/>
+        android:id="@+id/login_error_txt"
+        android:textColor="#fa0101"/>
 
 </LinearLayout>

@@ -32,6 +32,14 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+        
+        <activity android:name=".WorkPackageActivity"
+            android:label="Arbetspacket Info"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".SignActivity"
+            android:label="Skriv under"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>
 
