@@ -1,0 +1,125 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.alfred.craftsman_part.MainActivity"
+    tools:showIn="@layout/activity_work_package"
+    android:orientation="horizontal"
+    android:gravity="left">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:id="@+id/material_txt"
+            android:text="Material:"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Verktyg:"
+            android:id="@+id/tools_txt"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="500dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:layout_width="500dp"
+            android:layout_height="400dp"
+            android:text="Arbetsberedning:"
+            android:id="@+id/pre_work_txt"
+            android:nextFocusUp="@id/pre_work_txt"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Skriv kommentarer här."
+            android:id="@+id/comment_edit"
+            android:inputType="textMultiLine"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:text="Kommentarer från arbetsledningen:"
+            android:id="@+id/al_comments_txt"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="Ej Avslutat"
+                android:id="@+id/wp_not_done_check"
+                android:layout_weight="1"/>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Avslutat"
+                android:id="@+id/wp_done_check"
+                android:layout_weight="1"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Skriv under"
+                android:layout_weight="1"
+                android:id="@+id/sign_wp_btn"
+                android:onClick="signWorkPackage"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Tillbaka"
+                android:id="@+id/back_to_room_btn"
+                android:onClick="goBackToRoom"/>
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>

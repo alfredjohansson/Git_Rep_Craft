@@ -58,10 +58,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String ROOM_TABLE_CREATE = "CREATE TABLE " + ROOM_TABLE +" ("
             + COLUMN_ROOM + " INTEGER , "
             + COLUMN_FLOOR + " INTEGER, "
-            + COLUMN_WORKPLACE_ID + " INTEGER , "
+            + COLUMN_WORKPLACE_ID + " INTEGER, "
             + COLUMN_WORKPACKAGE + " TEXT, "
             + COLUMN_ROOM_MAP + " TEXT, "
-            + "PRIMARY KEY ( " + COLUMN_WORKPLACE_ID + ", " + COLUMN_FLOOR + ", " + COLUMN_ROOM + ", " + COLUMN_WORKPACKAGE + ") "
+            + "PRIMARY KEY (" + COLUMN_WORKPLACE_ID + ", " + COLUMN_FLOOR + ", " + COLUMN_ROOM + ", " + COLUMN_WORKPACKAGE  + ") "
             +")";
 
 
@@ -254,7 +254,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Funktion som plockar ut alla arbetspaket för ett rum
     public String [] getWP(int room, int floor,int wpID){
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT DISTINCT " + COLUMN_WORKPACKAGE + " FROM " + ROOM_TABLE + " WHERE " +
+        String query = "SELECT " + COLUMN_WORKPACKAGE + " FROM " + ROOM_TABLE + " WHERE " +
                 COLUMN_WORKPLACE_ID + " = " + wpID +" AND " + COLUMN_FLOOR + " = " + floor + " AND " +
                 COLUMN_ROOM + " = " + room;
         String [] WP = null;

@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by alfred on 4/26/16.
@@ -17,17 +20,19 @@ import android.widget.TextView;
 public class RoomActivity extends Activity {
 
     private final static int DEFAULT=0;
+    private final int WORK_PACKAGE_ID=1;
     DatabaseHelper db;
     private int floorID;
     private int projectID;
+    private String workPackageID;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
-        Context context = this;
-        ListView workPackageList = (ListView) findViewById(R.id.work_package_list);
+        final Context context = this;
+        final ListView workPackageList = (ListView) findViewById(R.id.work_package_list);
         Button chooseWrokPackageBtn = (Button)findViewById(R.id.choose_workpackage_btn);
         TextView roomDrawing = (TextView)findViewById(R.id.room_drawing_txt);
 
@@ -40,13 +45,28 @@ public class RoomActivity extends Activity {
         int roomID = activityThatCalled.getExtras().getInt("roomID", DEFAULT);
         roomDrawing.setText("Förhansvisa rummsritning " + roomID);
 
-        String [] workPackages =  {"WP1", "WP2", "WP3"}; //db.getWP(projectID, floorID, roomID); //
+        String [] workPackages =  db.getWP(roomID, floorID, projectID); //{"WP1", "WP2", "WP3"}; //
         db.close();
 
 
         ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, workPackages);
         workPackageList.setAdapter(listAdapter);
 
+        workPackageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                workPackageID = workPackageList.getItemAtPosition(position).toString();
+                Toast.makeText(context, workPackageID + " Valt", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
+    public void chooseWorkPackage(View view) {
+        Intent getActivityWorkPackage = new Intent(this, WorkPackageActivity.class);
+        getActivityWorkPackage.putExtra("workPackageID", workPackageID);
+        startActivityForResult(getActivityWorkPackage, WORK_PACKAGE_ID);
     }
 
 
