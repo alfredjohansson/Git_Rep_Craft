@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,10 +35,7 @@ public class MainActivity extends AppCompatActivity {
     final int PROJECT_ID=1;
     final int PROJECT_FLOOR=2;
     int ACTIVITY_ROOM=3;
-    String [] rooms;
 
-
-    TextView idReturned;
     Button chooseFloor;
 
     @Override
@@ -51,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         db.insertData();
         db.close();
         chooseFloor = (Button) findViewById(R.id.choose_room_btn);
+        final ImageView draw = (ImageView)findViewById(R.id.main_draw_img);
 
         SharedPreferences projectSettings = getSharedPreferences("projectSettings", MODE_PRIVATE);
         int projectID = projectSettings.getInt("projectID", DEFAULT);
@@ -59,12 +58,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         String [] rooms = db.getRoom(projectID,floorID);
+        // for(int i=0;i<rooms.length;i++) rooms[i] = "Rum " + rooms[i];
         db.close();
         ListAdapter listAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, rooms);
 
         final ListView roomList = (ListView)findViewById(R.id.room_list);
 
-        idReturned = (TextView)findViewById(R.id.id_returned_txt);
+
 
         roomList.setAdapter(listAdapter);
 
@@ -76,10 +76,13 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(context, "Du har valt rum " + roomIdFromChoosen, Toast.LENGTH_SHORT).show();
 
+
             }
         });
 
-
+        if (floorID==0)draw.setImageResource(R.drawable.fel);
+        if(floorID==1)draw.setImageResource(R.drawable.ritning_app);
+        if(floorID==2)draw.setImageResource(R.drawable.planritning_test);
 
             }
 
@@ -115,35 +118,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    //Ska fylla listView med rum och visa planritningen ifall returnCode=TRUE
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-            //ID från välj projekt
-
-            if(PROJECT_ID==requestCode) {
-                idSentBack = data.getStringExtra("projectID");
-                idFromProject = Integer.parseInt(idSentBack);
-                String [] blabla = db.getFloors(idFromProject);
-                db.close();
-
-                for(int i = 0 ; i < blabla.length; i++){
-                    idReturned.append(" "+ blabla[i]);
-                }
-
-                //idReturned.setText(idSentBack);
-
-
-            } else if(PROJECT_FLOOR == requestCode) {
-                floorSentBack = data.getStringExtra("floorID");
-                idReturned.setText(floorSentBack);
-            }
-
-
-
     }
 
     public void chooseRoom(View view) {

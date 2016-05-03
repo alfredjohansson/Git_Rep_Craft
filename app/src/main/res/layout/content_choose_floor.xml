@@ -41,13 +41,12 @@
     </LinearLayout>
 
 
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/floor_selected_txt"
-        android:text="Planritning"
-        android:textSize="40sp"
-        android:gravity="center"/>
+        android:id="@+id/floor_draw_img"
+        android:src="@drawable/preview"
+        android:layout_marginLeft="20dp"/>
 
 
     </LinearLayout>
