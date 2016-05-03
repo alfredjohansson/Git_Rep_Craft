@@ -4,9 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by alfred on 4/27/16.
@@ -19,6 +28,12 @@ public class SignActivity extends Activity {
     DatabaseHelper db;
     boolean wpStatus;
     String WP;
+    String [] selected = new String[3];
+    int i = 0;
+    ArrayList arrayList = new ArrayList<String>();
+
+
+
 
 
     @Override
@@ -26,11 +41,37 @@ public class SignActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
 
+        final TextView test = (TextView)findViewById(R.id.test);
+
+
         userName = (EditText)findViewById(R.id.user_name_edit);
         userPassword = (EditText)findViewById(R.id.user_pw_edit);
         errorText = (TextView)findViewById(R.id.sign_error_txt);
         sign = (Button)findViewById(R.id.sign_wp_btn);
         db = new DatabaseHelper(this);
+
+        final String [] controllList = {"Kontrollera dörrmått" , "Kontroll av dimensioner", "Kotroll av regelavstånd", "Kontroll av kortlingar", "Kontroll av isolering", "Kontroll av El och VVS", "Kontroll av Brandklass" , "Kontroll av ljudklass"};
+        ListAdapter listAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_selectable_list_item, controllList );
+        final ListView checkList = (ListView)findViewById(R.id.controll_list);
+
+        checkList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                String item = checkList.getItemAtPosition(position).toString();
+
+                if(!exist(item)){
+                    arrayList.add(item);
+                    test.append(item + '\n');
+                }
+
+
+
+            }
+        });
+
+        checkList.setAdapter(listAdapter);
 
         Intent activityThatCalled = getIntent();
         wpStatus = activityThatCalled.getBooleanExtra("wpStatus", false);
@@ -48,33 +89,33 @@ public class SignActivity extends Activity {
         String userN = userName.getText().toString();
         String userPw = userPassword.getText().toString();
 
-        db.changeStatus(WP, userN, wpStatus);
+        if(db.getStatus(WP)) db.changeStatus(WP, userN, false);
 
-        /*//Kollar så att användaren finns i databasen true om användaren finns
-        boolean usr = db.getUserNameExist(userN);
+        else db.changeStatus(WP,userN,true);
 
-        if(usr){
-            //finns användaren så kolla så deras PW är samma som det som skrevs in i PW edit text
-            if(userPw.equals(db.getUserNamePassword)){
 
-            }
-            //annars skriv ut i errorText att det är fel
-            else {
-                errorText.setText("Fel användarnamn eller lösenord!");
-                return;
-            }
-            //ifall användaren inte finns ska error skrivas ut i errorText också
-        } else {
-            errorText.setText("Fel användarnamn eller lösenord!");
-            return;
-        }*/
 
         Intent goBack = new Intent();
-        goBack.putExtra("signOK", wpStatus);
+        goBack.putExtra("signOK", arrayList);
         goBack.putExtra("userID", userN);
         setResult(RESULT_OK, goBack);
         finish();
 
 
+    }
+
+    public boolean exist (String string){
+
+        for(int i =0; i< arrayList.size();i++){
+
+            if(string.equals(arrayList.get(i))){
+
+                return true;
+            }
+
+
+        }
+
+        return false;
     }
 }

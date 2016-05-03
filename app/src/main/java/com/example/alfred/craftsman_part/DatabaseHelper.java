@@ -304,6 +304,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return message;
     }
 
+    public String getTools (String WP){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_TOOLS + " FROM " + WORKPACKAGE_TABLE + " WHERE " + COLUMN_WORKPACKAGE +  " = '" + WP + "' ";
+        String message = "";
+        if(db != null){
+            Cursor cursor = db.rawQuery(query,null);
+            if(cursor.moveToFirst()){
+                message = cursor.getString(0);
+            }
+        }
+        db.close();
+        return message;
+
+
+
+    }
+
+    public String getMaterials (String WP){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_MATERIAL + " FROM " + WORKPACKAGE_TABLE + " WHERE " + COLUMN_WORKPACKAGE +  " = '" + WP + "' ";
+        String message = "";
+        if(db != null){
+            Cursor cursor = db.rawQuery(query,null);
+            if(cursor.moveToFirst()){
+                message = cursor.getString(0);
+            }
+        }
+        db.close();
+        return message;
+
+
+
+    }
+
+    public String getCrit(String WP){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_CONTROLS + " FROM " + WORKPACKAGE_TABLE + " WHERE " + COLUMN_WORKPACKAGE +  " = '" + WP + "' ";
+        String message = "";
+        if(db != null){
+            Cursor cursor = db.rawQuery(query,null);
+            if(cursor.moveToFirst()){
+                message = cursor.getString(0);
+            }
+        }
+        db.close();
+        return message;
+    }
+
     public boolean sign(String WP, String signature){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + WORKPACKAGE_TABLE + " SET " + COLUMN_SIGNATURES + " ='" + signature + "' " + "WHERE " + COLUMN_WORKPACKAGE + " ='" + WP + "' ";
@@ -317,6 +367,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         }
     }
+
     public boolean changeStatus(String WP, String signature, boolean status){
         SQLiteDatabase db = this.getWritableDatabase();
         int a;
@@ -343,13 +394,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insertWorkPlace(2,"Arbetsplatts2",1,1,"Våningsritning21");
         insertWorkPlace(2,"Arbetsplatts2",1,2,"Våningsritning21");
 
-        insertRoom(1,1,1,"AP1","Rumsritning1");
-        insertRoom(1,1,1,"AP2","Rumsritning1");
+        insertRoom(1,1,1,"Regelmontage","Rumsritning1");
+        insertRoom(1,1,1,"Isolering och Gipsning","Rumsritning1");
+        insertRoom(1,1,1,"Utsättning","Rumsritning1");
+        insertRoom(1,1,1,"El och VVS","Rumsritning1");
         insertRoom(2,1,1,"AP3","Rumsritning2");
         insertRoom(2,1,1,"AP4","Rumsritning2");
 
-        insertWorkPackage("AP1","","Ritning",false,"kolla med vattenpass","","Hammare","reglar");
-        insertWorkPackage("AP2","Ser bra ut","Ritning",true,"Dubbelkolla cc","Ove","Hammare","Gips");
+        insertWorkPackage("Utsättning","Stolpmått","Ritning",true,"hörnpunkter utsatta","Ove","Hammare","Mursnöre");
+        insertWorkPackage("Regelmontage","Tänk på att utsatta mått är regelmått. Senaste revisionen 28/4 - 2016","Ritning",false,"Kritiska moment: kolla så väggen står rakt" + '\n' + "Väggklassning: Väggen är brandklass 2","","Hammare","reglar");
+        insertWorkPackage("El och VVS","Ser bra ut","Ritning",false,"Dubbelkolla cc","Ove","Hammare","Gips");
+        insertWorkPackage("Isolering och Gipsning","Ser bra ut","Ritning",false,"Dubbelkolla cc","Ove","Hammare","Gips");
         insertWorkPackage("AP3","","Ritning",false,"Kolla något","","Såg","Gips");
     }
 }

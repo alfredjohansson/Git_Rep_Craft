@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,7 +35,6 @@ public class RoomActivity extends Activity {
         final Context context = this;
         final ListView workPackageList = (ListView) findViewById(R.id.work_package_list);
         Button chooseWrokPackageBtn = (Button)findViewById(R.id.choose_workpackage_btn);
-        TextView roomDrawing = (TextView)findViewById(R.id.room_drawing_txt);
 
         db = new DatabaseHelper(this);
         SharedPreferences projectSettings = getSharedPreferences("projectSettings",MODE_PRIVATE);
@@ -43,13 +43,14 @@ public class RoomActivity extends Activity {
 
         Intent activityThatCalled = getIntent();
         int roomID = activityThatCalled.getExtras().getInt("roomID", DEFAULT);
-        roomDrawing.setText("Förhansvisa rummsritning " + roomID);
+        ImageView draw = (ImageView)findViewById(R.id.room_draw_img);
+        draw.setImageResource(R.drawable.rum_ritning);
 
         String [] workPackages =  db.getWP(roomID, floorID, projectID); //{"WP1", "WP2", "WP3"}; //
         db.close();
 
 
-        ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, workPackages);
+        ListAdapter listAdapter = new myAdapter(this, workPackages);
         workPackageList.setAdapter(listAdapter);
 
         workPackageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

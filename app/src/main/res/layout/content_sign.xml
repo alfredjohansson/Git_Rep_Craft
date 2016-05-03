@@ -10,48 +10,98 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.alfred.craftsman_part.MainActivity"
     tools:showIn="@layout/activity_sign"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:gravity="center|top"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
 
-    <TextView
-        android:id="@+id/header"
-        android:nextFocusUp="@id/header"
-        android:layout_width="400dp"
-        android:layout_height="100dp"
-        android:text="Användare och Lösenord"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:textStyle="bold"/>
-    <EditText
-        android:layout_width="400dp"
-        android:layout_height="100dp"
-        android:hint="Användarnamn"
-        android:id="@+id/user_name_edit"
-        android:gravity="center"/>
-    <EditText
-        android:layout_width="400dp"
-        android:layout_height="100dp"
-        android:hint="Lösenord"
-        android:id="@+id/user_pw_edit"
-        android:gravity="center"
-        android:inputType="textPassword"/>
-    <Button
-        android:layout_width="400dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="50dp"
-        android:text="Skriv udner"
-        android:id="@+id/sign_with_login_btn"
-        android:onClick="sign"/>
 
-    <TextView
-        android:layout_width="400dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/sign_error_txt"
-        android:textColor="#fa0101" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/header"
+            android:nextFocusUp="@id/header"
+            android:layout_width="400dp"
+            android:layout_height="100dp"
+            android:text="Användare och Lösenord"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:textStyle="bold"/>
+        <EditText
+            android:layout_width="400dp"
+            android:layout_height="100dp"
+            android:hint="Användarnamn"
+            android:id="@+id/user_name_edit"
+            android:gravity="center"/>
+        <EditText
+            android:layout_width="400dp"
+            android:layout_height="100dp"
+            android:hint="Lösenord"
+            android:id="@+id/user_pw_edit"
+            android:gravity="center"
+            android:inputType="textPassword"/>
+        <Button
+            android:layout_width="400dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="50dp"
+            android:text="Skriv under"
+            android:id="@+id/sign_with_login_btn"
+            android:onClick="sign"/>
+
+        <TextView
+            android:layout_width="400dp"
+            android:layout_height="match_parent"
+            android:id="@+id/sign_error_txt"
+            android:textColor="#fa0101" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kontroller som ska göras:"
+            android:textSize="30sp"
+            android:textStyle="bold"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/controll_list"
+            android:layout_weight="1">
+
+
+        </ListView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="Kontroller som du vill avsluta:"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/test"
+            android:textSize="20sp"/>
+
+
+    </LinearLayout>
 
 
 

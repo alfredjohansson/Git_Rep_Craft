@@ -17,18 +17,27 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:id="@+id/material_txt"
+            android:layout_height="30dp"
             android:text="Material:"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:id="@+id/material_txt"
             />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Verktyg:"
+            android:textStyle="bold"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Verktyg:"
-            android:id="@+id/tools_txt"
-            />
+            android:id="@+id/tools_txt" />
 
     </LinearLayout>
 
@@ -40,17 +49,41 @@
         android:focusableInTouchMode="true">
 
         <TextView
-            android:layout_width="500dp"
-            android:layout_height="400dp"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
             android:text="Arbetsberedning:"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="470dp"
+            android:layout_height="400dp"
             android:id="@+id/pre_work_txt"
             android:nextFocusUp="@id/pre_work_txt"/>
-        <EditText
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Skriv kommentarer här."
-            android:id="@+id/comment_edit"
-            android:inputType="textMultiLine"/>
+            android:orientation="vertical">
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Skriv kommentarer här."
+                android:id="@+id/comment_edit"
+                android:inputType="textMultiLine"
+                android:layout_weight="1"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:text="Kommentera"
+                android:onClick="kommentera"/>
+
+        </LinearLayout>
+
 
 
     </LinearLayout>
@@ -62,9 +95,15 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="450dp"
-            android:text="Kommentarer från arbetsledningen:"
-            android:id="@+id/al_comments_txt"/>
+            android:layout_height="30dp"
+            android:text="Kommentarer:"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="420dp"
+            android:id="@+id/al_comments_txt"
+            />
 
 
         <LinearLayout
@@ -72,20 +111,22 @@
             android:layout_height="100dp"
             android:orientation="horizontal">
 
-            <CheckBox
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:text="Ej Avslutat"
-                android:id="@+id/wp_not_done_check"
-                android:layout_weight="1"/>
-
-            <CheckBox
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:text="Avslutat"
-                android:id="@+id/wp_done_check"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                />
+                android:text="Status:"
+                android:gravity="center|left"
+                android:textStyle="bold"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/status_txt"
+                android:layout_gravity="center|left"/>
+
 
 
         </LinearLayout>
@@ -98,7 +139,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Skriv under"
+                android:text="Avsluta Moment"
                 android:layout_weight="1"
                 android:id="@+id/sign_wp_btn"
                 android:onClick="signWorkPackage"/>
